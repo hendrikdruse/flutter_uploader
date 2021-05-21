@@ -18,6 +18,9 @@ import androidx.work.WorkerParameters;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
+import com.moczul.ok2curl.CurlInterceptor;
+import com.moczul.ok2curl.logger.Loggable;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -223,6 +226,7 @@ public class UploadWorker extends Worker implements CountProgressListener {
               .connectTimeout((long) timeout, TimeUnit.SECONDS)
               .writeTimeout((long) timeout, TimeUnit.SECONDS)
               .readTimeout((long) timeout, TimeUnit.SECONDS)
+              .addNetworkInterceptor(new CurlInterceptor(message -> Log.d(tag, "curl: " + message)))
               .build();
 
       call = client.newCall(request);
